@@ -334,31 +334,37 @@ func resourceIBMTransitGatewayConnectionCreate(d *schema.ResourceData, meta inte
 		baseNetworkType := d.Get(tgBaseNetworkType).(string)
 		createTransitGatewayConnectionOptions.SetBaseNetworkType(baseNetworkType)
 	}
-	if _, ok := d.GetOk(tgLocalGatewayIp); ok {
-		localGatewayIp := d.Get(tgLocalGatewayIp).(string)
-		createTransitGatewayConnectionOptions.SetLocalGatewayIp(localGatewayIp)
-	}
-	if _, ok := d.GetOk(tgLocalTunnelIp); ok {
-		localTunnelIp := d.Get(tgLocalTunnelIp).(string)
-		createTransitGatewayConnectionOptions.SetLocalTunnelIp(localTunnelIp)
-	}
-	if _, ok := d.GetOk(tgRemoteBgpAsn); ok {
-		remoteBgpAsn := int64(d.Get(tgRemoteBgpAsn).(int))
-		createTransitGatewayConnectionOptions.SetRemoteBgpAsn(remoteBgpAsn)
-	}
-	if _, ok := d.GetOk(tgRemoteGatewayIp); ok {
-		remoteGatewayIp := d.Get(tgRemoteGatewayIp).(string)
-		createTransitGatewayConnectionOptions.SetRemoteGatewayIp(remoteGatewayIp)
-	}
-	if _, ok := d.GetOk(tgRemoteTunnelIp); ok {
-		remoteTunnelIp := d.Get(tgRemoteTunnelIp).(string)
-		createTransitGatewayConnectionOptions.SetRemoteTunnelIp(remoteTunnelIp)
-	}
-	if _, ok := d.GetOk(tgZone); ok {
-		zoneIdentity := &transitgatewayapisv1.ZoneIdentity{}
-		zoneName := d.Get(tgZone).(string)
-		zoneIdentity.Name = &zoneName
-		createTransitGatewayConnectionOptions.SetZone(zoneIdentity)
+	//Only set these properties if it's a not a redundant_gre type
+	if "redundant_gre" != networkType {
+		if _, ok := d.GetOk(tgLocalGatewayIp); ok {
+			localGatewayIp := d.Get(tgLocalGatewayIp).(string)
+			createTransitGatewayConnectionOptions.SetLocalGatewayIp(localGatewayIp)
+		}
+		if _, ok := d.GetOk(tgLocalTunnelIp); ok {
+			localTunnelIp := d.Get(tgLocalTunnelIp).(string)
+			createTransitGatewayConnectionOptions.SetLocalTunnelIp(localTunnelIp)
+		}
+
+		if _, ok := d.GetOk(tgRemoteBgpAsn); ok {
+			remoteBgpAsn := int64(d.Get(tgRemoteBgpAsn).(int))
+			createTransitGatewayConnectionOptions.SetRemoteBgpAsn(remoteBgpAsn)
+		}
+
+		if _, ok := d.GetOk(tgRemoteGatewayIp); ok {
+			remoteGatewayIp := d.Get(tgRemoteGatewayIp).(string)
+			createTransitGatewayConnectionOptions.SetRemoteGatewayIp(remoteGatewayIp)
+		}
+		if _, ok := d.GetOk(tgRemoteTunnelIp); ok {
+			remoteTunnelIp := d.Get(tgRemoteTunnelIp).(string)
+			createTransitGatewayConnectionOptions.SetRemoteTunnelIp(remoteTunnelIp)
+		}
+
+		if _, ok := d.GetOk(tgZone); ok {
+			zoneIdentity := &transitgatewayapisv1.ZoneIdentity{}
+			zoneName := d.Get(tgZone).(string)
+			zoneIdentity.Name = &zoneName
+			createTransitGatewayConnectionOptions.SetZone(zoneIdentity)
+		}
 	}
 
 	if _, ok := d.GetOk(tgDefaultPrefixFilter); ok {
