@@ -521,25 +521,9 @@ func resourceIBMTransitGatewayConnectionRead(d *schema.ResourceData, meta interf
 	if instance.RequestStatus != nil {
 		d.Set(tgRequestStatus, *instance.RequestStatus)
 	}
-	if instance.LocalGatewayIp != nil {
-		d.Set(tgLocalGatewayIp, *instance.LocalGatewayIp)
-	}
-	if instance.LocalTunnelIp != nil {
-		d.Set(tgLocalTunnelIp, *instance.LocalTunnelIp)
-	}
-	if instance.RemoteGatewayIp != nil {
-		d.Set(tgRemoteGatewayIp, *instance.RemoteGatewayIp)
-	}
-	if instance.LocalBgpAsn != nil {
-		d.Set(tgLocalBgpAsn, *instance.LocalBgpAsn)
-	}
-	if instance.RemoteBgpAsn != nil {
-		d.Set(tgRemoteBgpAsn, *instance.RemoteBgpAsn)
-	}
 	if instance.PrefixFiltersDefault != nil {
 		d.Set(tgDefaultPrefixFilter, *instance.PrefixFiltersDefault)
 	}
-
 	d.Set(tgConnectionId, *instance.ID)
 	d.Set(tgGatewayId, gatewayId)
 	getTransitGatewayOptions := &transitgatewayapisv1.GetTransitGatewayOptions{
